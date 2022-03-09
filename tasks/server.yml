@@ -47,6 +47,18 @@
   args:
     chdir: "/etc/openvpn/server/{{ openvpn_name }}/easy-rsa/"
 
+- name: Fix CRL permissions (dir)
+  file:
+    path: "/etc/openvpn/server/{{ openvpn_name }}/easy-rsa/pki"
+    mode: "u=rwx,g=rx,o=rx"
+    state: directory
+
+- name: Fix CRL permissions (crl)
+  file:
+    path: "/etc/openvpn/server/{{ openvpn_name }}/easy-rsa/pki/crl.pem"
+    mode: "u=rw,g=r,o=r"
+    state: file
+
 - name: Sign server certificate request
   command: "./easyrsa --batch build-server-full {{ openvpn_hostname }} nopass"
   args:
